@@ -20,7 +20,8 @@ export class EmailService {
 
   async sendEmail(to: string, subject: string, text: string): Promise<void> {
     const mailOptions = {
-      from: this.configService.get('EMAIL_FROM') || 'alumni-connect@example.com',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      from: this.configService.get('EMAIL_FROM') || 'godfreyenos360@gmail.com',
       to,
       subject,
       text,

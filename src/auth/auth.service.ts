@@ -1,5 +1,9 @@
 // src/auth/auth.service.ts
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,7 +23,8 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<{ accessToken: string }> {
-    const { email, password, firstName, lastName, graduationYear, course } = registerDto;
+    const { email, password, firstName, lastName, graduationYear, course } =
+      registerDto;
 
     // Check if user already exists
     const userExists = await this.usersRepository.findOne({ where: { email } });
@@ -62,8 +67,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
   }
-  
-  async createAdmin(registerDto: RegisterDto): Promise<{ accessToken: string }> {
+
+  async createAdmin(
+    registerDto: RegisterDto,
+  ): Promise<{ accessToken: string }> {
     const { email, password, firstName, lastName } = registerDto;
 
     // Check if user already exists
