@@ -1,4 +1,3 @@
-
 // src/auth/auth.service.ts
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -9,7 +8,7 @@ import { LoginDto, RegisterDto } from '../dtos/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './jwt-payload.interface';
 import { UserRole } from '../enums/user-role.enum';
-import { VerificationStatus } from 'src/enums/verification-status.enum';
+import { VerificationStatus } from '../enums/verification-status.enum';
 
 @Injectable()
 export class AuthService {
@@ -93,5 +92,9 @@ export class AuthService {
     const payload: JwtPayload = { email, id: user.id, role: user.role };
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
+  }
+
+  async findUserByRole(role: UserRole): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { role } });
   }
 }
