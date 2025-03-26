@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { config } from 'node:process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +21,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  const configDoc = new DocumentBuilder()
+  const config = new DocumentBuilder()
     .setTitle('ARU ALUMNI CONNECT API')
     .setDescription('An API for connecting ARU Alumni')
     .setVersion('1.0')
@@ -31,17 +33,26 @@ async function bootstrap() {
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
     .addTag('Auth', 'Endpoints related to authentication')
     .addTag('Users', 'Endpoints for user management')
+    .addTag('admin', 'Admin-only endpoints')
+    .addTag('Notifications', 'Endpoints for handling notifications')
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
       'JWT-auth',
     )
     .build();
 
-  const swagger = SwaggerModule.createDocument(app, configDoc);
+  const swagger = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, swagger);
+  SwaggerModule.setup('api', app, swagger, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
+  app.enableCors();
 
   await app.listen(port);
   console.log(`Application is running on port ${port}`);
+  console.log(`API Documentation available at httt://localhost:${port}/api`);
 }
 bootstrap();

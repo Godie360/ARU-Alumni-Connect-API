@@ -1,5 +1,11 @@
-
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRole } from '../enums/user-role.enum';
 import { VerificationStatus } from '../enums/verification-status.enum';
@@ -44,10 +50,14 @@ export class User {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.ALUMNI })
   role: UserRole;
 
-  @Column({ type: 'enum', enum: VerificationStatus, default: VerificationStatus.PENDING })
+  @Column({
+    type: 'enum',
+    enum: VerificationStatus,
+    default: VerificationStatus.PENDING,
+  })
   verificationStatus: VerificationStatus;
 
-  @OneToMany(() => Notification, notification => notification.recipient)
+  @OneToMany(() => Notification, (notification) => notification.recipient)
   notifications: Notification[];
 
   @CreateDateColumn()
